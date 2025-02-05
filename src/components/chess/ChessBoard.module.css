@@ -1,0 +1,31 @@
+.board {
+  display: grid;
+  width: 400px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  border: 1px solid black;
+}
+
+.selectedTile {
+  width: 50px;
+  height: 50px;
+  opacity: 0.5;
+  background: lightblue;
+}
+
+.possibleMoves {
+  width: 50px;
+  height: 50px;
+  opacity: 0.5;
+  background: blue;
+}
+
+.tile {
+  width: 50px;
+  height: 50px;
+}
+
+.chessPiece {
+  width: 50px;
+  height: 50px;
+}
