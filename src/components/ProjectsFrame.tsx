@@ -8,14 +8,17 @@ import RArrow from "../assets/right-arrow.png";
 import GithubImg from "../assets/github.png";
 
 import ReactImg from "../assets/react.png";
-import JavaImg from "../assets/java.png";
 import SpringImg from "../assets/spring.png";
+import CloudImg from "../assets/google-cloud.png";
+import FlaskImg from "../assets/flask.png";
+import AwsImg from "../assets/aws.png";
 
 import ChessPrev from "../assets/chess-gallery/preview.png";
 import ChessImg1 from "../assets/chess-gallery/img2.png";
 import ChessImg2 from "../assets/chess-gallery/img1.png";
 
 import StickerPrev from "../assets/stickers-gallery/preview.png";
+import StickerImg1 from "../assets/stickers-gallery/img1.png";
 
 import PortfolioPrev from "../assets/preview.png";
 
@@ -46,45 +49,16 @@ const projects: ProjectData[] = [
     linksTo: "/chess",
     technologies: [
       {
-        tag: "chess-fe",
-        image: ReactImg,
-        description: (
-          <p>
-            The front end is a web application built in react. Whenever a piece
-            is selected, a request is made to the back end for the logic, then
-            the screen is rendered based on responses from the server. Images
-            used for the chess pieces are the property of
-            <a
-              className="ml-1 text-blue-600"
-              href="https://greenchess.net/info.php?item=downloads"
-            >
-              https://greenchess.net/
-            </a>
-            .
-          </p>
-        ),
-      },
-      {
         tag: "chess-be",
-        image: JavaImg,
-        description: (
-          <p>
-            The entire back end of the application is built in Java 17. All
-            communication between the front end and back end is done using
-            websockets using the STOMP protocol.
-          </p>
-        ),
-      },
-      {
-        tag: "chess-fw",
         image: SpringImg,
         description: (
           <p>
-            This project was initialized using the
+            The backend is a Java application that was initialized using the
             <a className="mx-1 text-blue-600" href="https://start.spring.io">
               spring initializer
             </a>
             to create a Maven project with the WebSocket dependencies enabled.
+            The server communicates with a websocket using the STOMP protocol.
           </p>
         ),
       },
@@ -95,18 +69,27 @@ const projects: ProjectData[] = [
     image: StickerPrev,
     description:
       "An application where users can upload an paste images on the page.",
-    galleryItems: [],
+    galleryItems: [StickerImg1],
     githubUrl: "https://github.com/Theodora605/Sticker-Book-Project",
     linksTo: "/stickers",
     technologies: [
       {
-        tag: "i2",
-        image: SampleImg,
+        tag: "sticker-be",
+        image: FlaskImg,
         description: (
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut omnis
-            fuga unde magni ab. Unde rerum necessitatibus quae vel? Quaerat
-            deleniti delectus, velit porro quam maxime vel aperiam iure in.",
+            The backend is a REST API built using Python/Flask. The application
+            uses an SQLite database for saving and restoring the state.
+          </p>
+        ),
+      },
+      {
+        tag: "sticker-cloud",
+        image: CloudImg,
+        description: (
+          <p>
+            The application also allows users to upload images which are sent to
+            a Google Cloud bucket for storage.
           </p>
         ),
       },
@@ -115,20 +98,25 @@ const projects: ProjectData[] = [
   {
     name: "Personal Website",
     image: PortfolioPrev,
-    description: "This website is also an ongoing project",
+    description:
+      "This website serves as a place to show what projects I am working on.",
     galleryItems: [],
-    githubUrl: "",
+    githubUrl: "https://github.com/Theodora605/portfolio/tree/main",
     technologies: [
       {
-        tag: "i3",
-        image: SampleImg,
+        tag: "portfolio-fe",
+        image: ReactImg,
         description: (
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut omnis
-            fuga unde magni ab. Unde rerum necessitatibus quae vel? Quaerat
-            deleniti delectus, velit porro quam maxime vel aperiam iure in.",
+            This website and any application demos hosted on it are built in
+            React/Typescript.
           </p>
         ),
+      },
+      {
+        tag: "portfolio-aws",
+        image: AwsImg,
+        description: <p>The website is hosted on AWS.</p>,
       },
     ],
   },
@@ -208,7 +196,7 @@ const ProjectsFrame = () => {
       <div
         className={
           cardSelected !== -1
-            ? "transition scale-100 bg-amber-100 border-dark-brown border-solid border-[3px] p-3 w-max shadow-2xl "
+            ? "transition scale-100 bg-amber-100 border-dark-brown border-solid border-[3px] p-3 w-max shadow-2xl rounded-2xl "
             : "transition scale-0"
         }
       >
@@ -218,7 +206,7 @@ const ProjectsFrame = () => {
               {cardSelected !== -1 &&
                 projects[cardSelected].galleryItems.map((image, i) => (
                   <img
-                    className="border-[2px] border-t-[3px] border-r-[3px] border-dark-brown border-bold w-[300px] h-auto"
+                    className="border-[2px] border-t-[3px] border-r-[3px] border-dark-brown border-bold w-auto h-[300px]"
                     key={`${projects[cardSelected].name}-img${i}`}
                     src={image}
                   />
@@ -232,7 +220,6 @@ const ProjectsFrame = () => {
                   href={
                     cardSelected !== -1 ? projects[cardSelected].linksTo : ""
                   }
-                  target="_blank"
                 >
                   <div className="flex cursor-pointer self-center justify-center bg-orange-500 p-1 mx-6 mb-3 border-black border-solid border-[3px] rounded-[15px]">
                     <p className="font-bold">Try it out!</p>

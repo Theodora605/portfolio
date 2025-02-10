@@ -5,7 +5,6 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import ChessPage from "./pages/ChessPage.tsx";
 import StickerBookPage from "./pages/StickerBookPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
-import App from "./App.tsx";
 
 const router = createBrowserRouter([
   {
@@ -19,10 +18,6 @@ const router = createBrowserRouter([
   {
     path: "/stickers",
     element: <StickerBookPage />,
-  },
-  {
-    path: "/app",
-    element: <App />,
   },
 ]);
 

@@ -172,6 +172,10 @@ export const ChessBoard = ({ player }: Props) => {
       });
     } else {
       console.log("Failed to publish");
+      setTimeout(() => {
+        console.log("Re-attempting");
+        makeRequest(message);
+      }, 1000);
     }
   };
 

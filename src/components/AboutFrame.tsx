@@ -66,16 +66,6 @@ const AboutFrame = () => {
             each new project presents its own supply of unique problems
             requiring efficient solutions! Today, I find enjoyment in always
             having a project to work on, and completing my daily Leetcode
-            problem.My childhood passion for learning led me to pursue further
-            education in my favourite fields, earning myself a bachelor's degree
-            in computer science, and a master's degree in mathematics. What I
-            enjoy most about math is that every new topic I look at provides me
-            with new perspectives and ways of thinking. There is nothing more
-            satisfying to me than coming up with an elegant, succinct solution
-            to a problem. This translates particularly well to programming, as
-            each new project presents its own supply of unique problems
-            requiring efficient solutions! Today, I find enjoyment in always
-            having a project to work on, and completing my daily Leetcode
             problem.
           </p>
         </div>

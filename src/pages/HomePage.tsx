@@ -34,7 +34,7 @@ const HomePage = () => {
             </h2>
           </div>
         </div>
-        <div className="h-[1500px] bg-light-brown border-solid border-dark-brown border-[3px] p-9 rounded-3xl">
+        <div className="h-[1200px] bg-light-brown border-solid border-dark-brown border-[3px] p-9 rounded-3xl">
           <div className="flex justify-center">
             <ProjectsFrame />
           </div>
