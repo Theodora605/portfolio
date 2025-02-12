@@ -5,12 +5,12 @@ import ProjectsFrame from "../components/ProjectsFrame";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col mx-[200px] self-center justify-center">
+    <div className="flex flex-col 2xl:mx-[12%] self-center justify-center">
       <div>
         <div className="mb-14 mt-24">
           <NameFrame />
         </div>
-        <div className="flex justify-end">
+        <div className="flex 2xl:justify-end">
           <SkillsFrame />
         </div>
       </div>
@@ -34,7 +34,7 @@ const HomePage = () => {
             </h2>
           </div>
         </div>
-        <div className="h-[1200px] bg-light-brown border-solid border-dark-brown border-[3px] p-9 rounded-3xl">
+        <div className="h-[1500px] bg-light-brown border-solid border-dark-brown border-[3px] p-9 rounded-3xl">
           <div className="flex justify-center">
             <ProjectsFrame />
           </div>

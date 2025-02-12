@@ -74,18 +74,15 @@ const technologyItems: TechItem[] = [
 
 const SkillsFrame = () => {
   return (
-    <div className="bg-light-brown w-3/5 p-5 border-dark-brown border-[5px] border-solid rounded-[60px]">
-      <div className="inline-block p-3 mb-3 border-solid border-dark-brown border-[5px] rounded-full">
-        <p className="inline-block text-dark-brown text-6xl">Technologies</p>
-      </div>
-      <div className="grid grid-cols-7 max-w-full">
+    <div className="bg-light-brown w-max p-5 border-dark-brown border-[5px] border-solid rounded-[60px]">
+      <div className="grid grid-cols-4 xl:grid-cols-7 max-w-full">
         {technologyItems.map((item) => (
           <div
             key={`item-${item.name}`}
             className="flex flex-col justify-center items-center my-2"
           >
             <img className="w-20 h-20" src={item.image} />
-            <p className="text-dark-brown font-bold">{item.name}</p>
+            <p className="text-dark-brown font-bold text-center">{item.name}</p>
           </div>
         ))}
       </div>

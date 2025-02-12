@@ -14,7 +14,7 @@ const ProjectCard = ({
     <div>
       <div
         className={
-          "w-[300px] h-[400px] border-black border-solid border-[3px] bg-dark-brown drop-shadow-xl rounded-xl mb-3 hover:drop-shadow-md p-3"
+          "w-[300px] h-[400px] border-black border-solid border-[3px] bg-dark-brown drop-shadow-xl rounded-xl hover:drop-shadow-md p-3"
         }
         onClick={onClick}
       >

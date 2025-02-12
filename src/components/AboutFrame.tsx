@@ -7,13 +7,13 @@ import ResumePdf from "../assets/downloads/theo_goossens.pdf";
 
 const AboutFrame = () => {
   return (
-    <div className="flex gap-8 self-center justify-center">
-      <div className="self-center">
+    <div className="2xl:flex gap-8 self-center justify-center">
+      <div className="flex flex-col self-center justify-center">
         <img
-          className="h-auto w-[340px] border-[5px] border-solid border-dark-brown rounded-[150px]"
+          className="h-auto w-[340px] border-[5px] border-solid border-dark-brown rounded-[150px] self-center"
           src={ProfileImg}
         />
-        <div className="grid grid-cols-4 self-center gap-4">
+        <div className="grid grid-cols-4 w-[340px] mb-2 self-center gap-4">
           <a
             className="m-auto"
             target="_blank"
@@ -36,7 +36,7 @@ const AboutFrame = () => {
           </a>
         </div>
       </div>
-      <div className="self-center w-8/12 h-auto bg-dark-brown p-2 rounded-lg">
+      <div className="self-center w-screen 2xl:w-8/12 h-auto bg-dark-brown p-2 rounded-lg">
         <div className="self-center gap-3 bg-amber-100 border-dark-brown border-solid border-[3px] p-3 rounded-xl">
           <p className="text-lg font-bold my-1">I am a Chronic Tinkerer</p>
           <p>

@@ -2,9 +2,6 @@ import { useState } from "react";
 import SampleImg from "../assets/tailwind.png";
 import ProjectCard from "./ProjectCard";
 
-import LArrow from "../assets/left-arrow.png";
-import RArrow from "../assets/right-arrow.png";
-
 import GithubImg from "../assets/github.png";
 
 import ReactImg from "../assets/react.png";
@@ -146,82 +143,80 @@ const projects: ProjectData[] = [
 ];
 
 const ProjectsFrame = () => {
-  const [cardSelected, setCardSelected] = useState(-1);
+  const [cardSelected, setCardSelected] = useState(0);
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-center gap-2">
-        <div className="w-[100px] h-[100px] p-2 self-center bg-dark-brown border-black border-solid border-[3px] rounded-[50px] opacity-20">
-          <img
-            className="justify-center self-center w-[80px] h-[80px]"
-            src={LArrow}
-          />
-        </div>
-        {projects.map((projectData, i) => (
-          <div
-            className={projectData.disabled ? "opacity-20" : "cursor-pointer"}
-          >
-            <ProjectCard
-              key={`card-${i}`}
-              name={projectData.name}
-              image={projectData.image}
-              description={projectData.description}
-              onClick={() => {
-                if (projectData.disabled) {
-                  return;
-                }
-                if (cardSelected === -1) {
-                  setCardSelected(i);
-                  return;
-                }
-                if (cardSelected === i) {
-                  setCardSelected(-1);
-                  return;
-                }
-                setCardSelected(-1);
-                setTimeout(() => {
-                  setCardSelected(i);
-                }, 300);
+      <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto">
+          {projects.map((projectData, i) => (
+            <div
+              className={
+                cardSelected === i
+                  ? "border-blue-400 border-[2px] border-solid mb-3 rounded-xl border-opacity-80"
+                  : "border-black border-[2px] border-solid mb-3 rounded-xl border-opacity-0"
+              }
+              style={{
+                opacity: projectData.disabled ? "20%" : "100%",
+                cursor: projectData.disabled ? "" : "pointer",
               }}
-            />
-          </div>
-        ))}
-        <div className="w-[100px] h-[100px] p-2 self-center bg-dark-brown border-black border-solid border-[3px] rounded-[50px] opacity-20">
-          <img
-            className="justify-center self-center w-[80px] h-[80px]"
-            src={RArrow}
-          />
+            >
+              <ProjectCard
+                key={`card-${i}`}
+                name={projectData.name}
+                image={projectData.image}
+                description={projectData.description}
+                onClick={() => {
+                  if (projectData.disabled) {
+                    return;
+                  }
+                  if (cardSelected === -1) {
+                    setCardSelected(i);
+                    return;
+                  }
+                  if (cardSelected === i) {
+                    //setCardSelected(-1);
+                    return;
+                  }
+                  setCardSelected(-1);
+                  setTimeout(() => {
+                    setCardSelected(i);
+                  }, 300);
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div
         className={
           cardSelected !== -1
-            ? "transition scale-100 bg-amber-100 border-dark-brown border-solid border-[3px] p-3 w-max shadow-2xl rounded-2xl "
+            ? "transition scale-100 bg-amber-100 border-dark-brown border-solid border-[3px] p-3 w-[100%] shadow-2xl rounded-2xl "
             : "transition scale-0"
         }
       >
-        <div className="flex h-max">
-          <div className="w-10/12 p-5">
-            <div className="flex gap-3 self-center justify-center">
+        <div className="flex flex-col xl:flex-row h-max">
+          <div className="w-10/12 p-5 overflow-x-auto self-center">
+            <div className="flex gap-3">
               {cardSelected !== -1 &&
                 projects[cardSelected].galleryItems.map((image, i) => (
                   <img
-                    className="border-[2px] border-t-[3px] border-r-[3px] border-dark-brown border-bold w-auto h-[300px]"
+                    className="border-[2px] border-t-[3px] border-r-[3px] border-dark-brown border-bold w-auto h-auto"
                     key={`${projects[cardSelected].name}-img${i}`}
                     src={image}
                   />
                 ))}
             </div>
           </div>
-          <div className="w-2/12">
+          <div className="flex w-max self-center xl:self-start xl:flex-col ">
             {cardSelected !== -1 && projects[cardSelected].linksTo && (
-              <div>
+              <div className="self-center">
                 <a
                   href={
                     cardSelected !== -1 ? projects[cardSelected].linksTo : ""
                   }
                 >
-                  <div className="flex cursor-pointer self-center justify-center bg-orange-500 p-1 mx-6 mb-3 border-black border-solid border-[3px] rounded-[15px]">
+                  <div className="flex cursor-pointer self-center justify-center bg-orange-500 p-1 px-7 mb-3 border-black border-solid border-[3px] rounded-[15px]">
                     <p className="font-bold">Try it out!</p>
                   </div>
                 </a>
@@ -231,7 +226,7 @@ const ProjectsFrame = () => {
               target="_blank"
               href={cardSelected !== -1 ? projects[cardSelected].githubUrl : ""}
             >
-              <div className="flex cursor-pointer self-center justify-center bg-white p-1 mx-6 border-black border-solid border-[3px] rounded-[15px]">
+              <div className="flex cursor-pointer self-center justify-center bg-white p-1 px-4 mx-6 border-black border-solid border-[3px] rounded-[15px] mb-3">
                 <p className="self-center mr-4 font-bold">GitHub</p>
                 <img className="w-[30px] h-auto" src={GithubImg} />
               </div>
@@ -244,9 +239,12 @@ const ProjectsFrame = () => {
               projects[cardSelected].technologies.map((techItem) => (
                 <tr key={techItem.tag}>
                   <td className="p-5">
-                    <img className="w-[150px] h-auto" src={techItem.image} />
+                    <img
+                      className="w-auto h-auto lg:w-[150px]"
+                      src={techItem.image}
+                    />
                   </td>
-                  <td className="px-6 w-[1200px]">{techItem.description}</td>
+                  <td className="px-6 w-max">{techItem.description}</td>
                 </tr>
               ))}
           </tbody>
