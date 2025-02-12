@@ -71,6 +71,16 @@ interface Props {
 }
 
 export const ChessBoard = ({ player }: Props) => {
+  const [board, setBoard] = useState<ChessPiece[][]>(
+    Array(8)
+      .fill(null)
+      .map(() => new Array(8).fill(null))
+  );
+
+  const stompClient = useStompClient();
+  const [selection, setSelection] = useState<Position | null>(null);
+  const [moves, setMoves] = useState<Set<string> | null>(null);
+
   useEffect(() => {
     makeRequest({
       request: "STATE",
@@ -78,16 +88,7 @@ export const ChessBoard = ({ player }: Props) => {
       positionTo: null,
       player: player,
     });
-  }, []);
-
-  const [board, setBoard] = useState<ChessPiece[][]>(
-    Array(8)
-      .fill(null)
-      .map(() => new Array(8).fill(null))
-  );
-  const stompClient = useStompClient();
-  const [selection, setSelection] = useState<Position | null>(null);
-  const [moves, setMoves] = useState<Set<string> | null>(null);
+  }, [stompClient]);
 
   const handleServerResponse = (response: string) => {
     console.log(response);
@@ -170,12 +171,6 @@ export const ChessBoard = ({ player }: Props) => {
         destination: "/app/chess",
         body: JSON.stringify(message),
       });
-    } else {
-      console.log("Failed to publish");
-      setTimeout(() => {
-        console.log("Re-attempting");
-        makeRequest(message);
-      }, 1000);
     }
   };
 

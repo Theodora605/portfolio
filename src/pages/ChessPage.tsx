@@ -41,9 +41,9 @@ const helpContents = (
       What if I don't see any pieces on the board?
     </p>
     <p>
-      This is a known bug. Try hitting the reset button to see if that fixes the
-      issue. If the application is still not showing the state, please send me
-      an email at{" "}
+      This is a known bug. Try hitting the refresh button to see if that fixes
+      the issue. If the application is still not showing the state, please send
+      me an email at{" "}
       <a className="text-blue-500" href="mailto:theodore.goossens@gmail.com">
         theodore.goossens@gmail.com
       </a>
@@ -115,6 +115,15 @@ function ChessPage() {
         </StompSessionProvider>
       </div>
 
+      <div className="flex w-[400px] p-3 bg-amber-100 border-dark-brown border-solid border-[5px] mt-3 mx-[40%] rounded-xl">
+        <p>
+          This application allows two players to play chess against each other.
+          To begin a match, one player clicks the white king to play as white
+          while a player in another browser clicks the black king to play as
+          black.
+        </p>
+      </div>
+
       {showHelp && (
         <HelpModal Content={helpContents} onClose={() => setShowHelp(false)} />
       )}
@@ -138,14 +147,38 @@ export function SendingMessages() {
       console.log("Failed to publish");
     }
   };
+
+  const requestState = () => {
+    if (stompClient) {
+      stompClient.publish({
+        headers: {
+          "content-type": "application/json",
+        },
+        destination: "/app/chess",
+        body: '{"request":"STATE","player":"WHITE"}',
+      });
+    } else {
+      console.log("Failed to publish");
+    }
+  };
   return (
-    <div
-      className="inline-block bg-light-brown p-3 rounded-[40px] border-dark-brown border-solid border-[3px] cursor-pointer mt-10"
-      onClick={requestReset}
-    >
-      <p className="flex justify-center text-dark-brown font-bold text-[32px] mx-5">
-        Reset
-      </p>
+    <div className="flex gap-5">
+      <div
+        className="inline-block bg-light-brown p-3 rounded-[40px] border-dark-brown border-solid border-[3px] cursor-pointer mt-10"
+        onClick={requestState}
+      >
+        <p className="flex justify-center text-dark-brown font-bold text-[32px] mx-5">
+          Refresh
+        </p>
+      </div>
+      <div
+        className="inline-block bg-light-brown p-3 rounded-[40px] border-dark-brown border-solid border-[3px] cursor-pointer mt-10"
+        onClick={requestReset}
+      >
+        <p className="flex justify-center text-dark-brown font-bold text-[32px] mx-5">
+          Reset
+        </p>
+      </div>
     </div>
   );
 }

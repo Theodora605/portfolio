@@ -151,6 +151,7 @@ const ProjectsFrame = () => {
         <div className="flex gap-2 overflow-x-auto">
           {projects.map((projectData, i) => (
             <div
+              key={`${projectData.name}-container`}
               className={
                 cardSelected === i
                   ? "border-blue-400 border-[2px] border-solid mb-3 rounded-xl border-opacity-80"
