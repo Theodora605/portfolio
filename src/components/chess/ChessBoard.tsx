@@ -16,6 +16,7 @@ import BBishopImg from "../../assets/chess/black-bishop.png";
 import BRookImg from "../../assets/chess/black-rook.png";
 import BQueenImg from "../../assets/chess/black-queen.png";
 import BKingImg from "../../assets/chess/black-king.png";
+import ChessPromotionModal from "./ChessPromotionModal";
 
 interface ChessPiece {
   id: string;
@@ -28,7 +29,8 @@ interface Position {
 }
 
 interface ChessClientMessage {
-  request: "STATE" | "MOVE" | "MOVESET" | "RESET";
+  request: "STATE" | "MOVE" | "MOVESET" | "RESET" | "PROMOTE";
+  promoteTo: string | null;
   positionFrom: string | null;
   positionTo: string | null;
   player: "WHITE" | "BLACK";
@@ -36,7 +38,7 @@ interface ChessClientMessage {
 
 interface ChessServerMessage {
   status: "SUCCESS" | "FAIL";
-  request: "STATE" | "MOVE" | "MOVESET" | "RESET";
+  request: "STATE" | "MOVE" | "MOVESET" | "RESET" | "PROMOTE";
   player: "WHITE" | "BLACK";
   position: string | null;
   state: string;
@@ -44,7 +46,7 @@ interface ChessServerMessage {
 
 const responseSchema: z.ZodType<ChessServerMessage> = z.object({
   status: z.enum(["SUCCESS", "FAIL"]),
-  request: z.enum(["STATE", "MOVE", "MOVESET", "RESET"]),
+  request: z.enum(["STATE", "MOVE", "MOVESET", "RESET", "PROMOTE"]),
   player: z.enum(["WHITE", "BLACK"]),
   position: z.string().or(z.null()),
   state: z.string(),
@@ -80,15 +82,28 @@ export const ChessBoard = ({ player }: Props) => {
   const stompClient = useStompClient();
   const [selection, setSelection] = useState<Position | null>(null);
   const [moves, setMoves] = useState<Set<string> | null>(null);
+  const [showPromotionModal, setShowPromotionModal] = useState<boolean>(false);
 
   useEffect(() => {
     makeRequest({
       request: "STATE",
       positionFrom: null,
       positionTo: null,
+      promoteTo: null,
       player: player,
     });
   }, [stompClient]);
+
+  const handlePromotionSelection = (selection: string) => {
+    console.log(selection);
+    makeRequest({
+      request: "PROMOTE",
+      promoteTo: selection,
+      positionFrom: null,
+      positionTo: null,
+      player: player,
+    });
+  };
 
   const handleServerResponse = (response: string) => {
     console.log(response);
@@ -103,6 +118,10 @@ export const ChessBoard = ({ player }: Props) => {
     if (serverMessage.status === "FAIL") {
       console.log(serverMessage.state);
       return;
+    }
+
+    if (serverMessage.request === "PROMOTE") {
+      setShowPromotionModal(false);
     }
 
     if (
@@ -134,6 +153,7 @@ export const ChessBoard = ({ player }: Props) => {
     if (
       serverMessage.request === "STATE" ||
       serverMessage.request === "MOVE" ||
+      serverMessage.request === "PROMOTE" ||
       serverMessage.request === "RESET"
     ) {
       const boardBuffer = serverMessage.state.split(",");
@@ -151,6 +171,18 @@ export const ChessBoard = ({ player }: Props) => {
               id: boardBuffer[y + 8 * x].substring(1),
             };
           }
+        }
+      }
+      // TODO: confusing choices for x and y here. Investigate this.
+      for (let x = 0; x < 8; x++) {
+        console.log(newBoard[0][x]);
+        console.log(newBoard[7][x]);
+        if (newBoard[0][x]?.id.charAt(0) === "p") {
+          setShowPromotionModal(true);
+        }
+        if (player === "BLACK" && newBoard[7][x]?.id.charAt(0) === "p") {
+          console.log("hit");
+          setShowPromotionModal(true);
         }
       }
       if (serverMessage.request === "MOVE") {
@@ -181,6 +213,12 @@ export const ChessBoard = ({ player }: Props) => {
   return (
     <div className="p-3 bg-dark-brown border-black border-[2px] rounded-xl">
       <div className={styles.board}>
+        {showPromotionModal && (
+          <ChessPromotionModal
+            player={player}
+            onSelection={handlePromotionSelection}
+          />
+        )}
         {board.map((row, r) =>
           row.map((tile, c) => (
             <div
@@ -207,6 +245,7 @@ export const ChessBoard = ({ player }: Props) => {
                               ? c.toString() + r.toString()
                               : (7 - c).toString() + (7 - r).toString(),
                           player: player,
+                          promoteTo: null,
                         });
                       }
                     }
@@ -224,6 +263,7 @@ export const ChessBoard = ({ player }: Props) => {
                               : (7 - c).toString() + (7 - r).toString(),
                           positionTo: null,
                           player: player,
+                          promoteTo: null,
                         });
                       }
                     }

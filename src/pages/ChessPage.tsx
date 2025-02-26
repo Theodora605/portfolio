@@ -108,19 +108,22 @@ function ChessPage() {
       </div>
 
       <div className="flex flex-col gap-[10px] h-[600px] items-center justify-center">
-        <StompSessionProvider url={"http://3.86.66.33:8080/websocket"}>
+        <StompSessionProvider url={"http://localhost:8080/websocket"}>
           {!selection && <TeamSelection onSelection={handleSelection} />}
           {selection && <ChessBoard player={selection} />}
           <SendingMessages />
         </StompSessionProvider>
       </div>
 
-      <div className="flex w-[400px] p-3 bg-amber-100 border-dark-brown border-solid border-[5px] mt-3 mx-[40%] rounded-xl">
+      <div className="flex flex-col w-[400px] p-3 bg-amber-100 border-dark-brown border-solid border-[5px] mt-3 mx-[40%] rounded-xl">
         <p>
           This application allows two players to play chess against each other.
           To begin a match, one player clicks the white king to play as white
           while a player in another browser clicks the black king to play as
           black.
+        </p>
+        <p className="font-bold">
+          If play pieces are not displaying, try clicking the refresh button.
         </p>
       </div>
 
