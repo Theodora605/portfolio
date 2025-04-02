@@ -51,8 +51,8 @@ type StatusMessage =
   | "Deleting..."
   | "Uploading...";
 
-const STICKERS_URI = "http://3.233.224.131:5000/stickers";
-const POSITIONS_URI = "http://3.233.224.131:5000/positions";
+const STICKERS_URI = "http://44.200.255.191:5000/stickers";
+const POSITIONS_URI = "http://44.200.255.191:5000/positions";
 
 const REMOVE = -3;
 const MOVE = -2;

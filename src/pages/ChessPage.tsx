@@ -108,7 +108,7 @@ function ChessPage() {
       </div>
 
       <div className="flex flex-col gap-[10px] h-[600px] items-center justify-center">
-        <StompSessionProvider url={"http://localhost:8080/websocket"}>
+        <StompSessionProvider url={"http://18.210.7.237:8080/websocket"}>
           {!selection && <TeamSelection onSelection={handleSelection} />}
           {selection && <ChessBoard player={selection} />}
           <SendingMessages />

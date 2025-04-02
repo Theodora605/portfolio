@@ -40,7 +40,7 @@ const projects: ProjectData[] = [
   {
     name: "Chess App",
     image: ChessPrev,
-    description: `A client-server chess application that communicates via websockets.`,
+    description: `A client-server chess application that communicates via websockets. Not optimized for mobile browsers.`,
     galleryItems: [ChessImg1, ChessImg2],
     githubUrl: "https://github.com/Theodora605/chess-application",
     linksTo: "/chess",
@@ -65,7 +65,7 @@ const projects: ProjectData[] = [
     name: "Sticker Book",
     image: StickerPrev,
     description:
-      "An application where users can upload an paste images on the page.",
+      "An application where users can upload an paste images on the page. Not optimized for mobile browsers.",
     galleryItems: [StickerImg1],
     githubUrl: "https://github.com/Theodora605/Sticker-Book-Project",
     linksTo: "/stickers",
