@@ -23,6 +23,12 @@ export const getProjects: () => Promise<Project[]> = async () => {
   return response.json();
 };
 
+export const getProject: (id: number) => Promise<Project> = async (id) => {
+  const response = await fetch(`${PROJECTS_URI}/${id}`);
+
+  return response.json();
+};
+
 export const addProject: (project: Project) => Promise<boolean> = async (
   project
 ) => {
