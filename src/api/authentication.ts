@@ -1,6 +1,9 @@
 const AUTH_ENDPOINT = "http://127.0.0.1:5000";
 
-export const login = async (username: string, password: string) => {
+export const login: (
+  username: string,
+  password: string
+) => Promise<boolean> = async (username, password) => {
   const response = await fetch(`${AUTH_ENDPOINT}/login`, {
     method: "POST",
     headers: {
@@ -16,7 +19,7 @@ export const login = async (username: string, password: string) => {
   return response.ok;
 };
 
-export const logout = async () => {
+export const logout: () => Promise<boolean> = async () => {
   const response = await fetch(`${AUTH_ENDPOINT}/logout`, {
     method: "POST",
     credentials: "include",
@@ -25,7 +28,7 @@ export const logout = async () => {
   return response.ok;
 };
 
-export const isLoggedIn = async () => {
+export const isLoggedIn: () => Promise<boolean> = async () => {
   const response = await fetch(`${AUTH_ENDPOINT}/me`, {
     credentials: "include",
   });
