@@ -1,6 +1,6 @@
 const PROJECTS_URI = "http://127.0.0.1:5000/projects";
 
-interface Project {
+export interface Project {
   id?: number;
   name: string;
   description: string;
