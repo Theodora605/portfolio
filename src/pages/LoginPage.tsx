@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { z } from "zod";
-import { isLoggedIn, login } from "../api/Authentication";
+import { isLoggedIn, login } from "../api/authentication";
 import { useNavigate } from "react-router";
 
 interface LoginData {
@@ -14,7 +14,7 @@ const inputSchema: z.ZodType<LoginData> = z.object({
 });
 
 const LoginPage = () => {
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);

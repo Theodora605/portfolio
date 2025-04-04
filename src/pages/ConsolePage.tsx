@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { logout, isLoggedIn } from "../api/Authentication";
+import { logout, isLoggedIn } from "../api/authentication";
 import { useNavigate } from "react-router";
-import { getProjects } from "../api/projects";
 
 const ConsolePage = () => {
   const handleTestClicked = () => {
-    getProjects().then((res) => console.log(res[0].name));
+    //getProjects().then((res) => console.log(res[0].name));
+    //getProject(2).then((res) => console.log(res.name));
+    navigate("/console/projects/3");
   };
 
   const handleLogoutClicked = () => {

@@ -7,6 +7,7 @@ import StickerBookPage from "./pages/StickerBookPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import ConsolePage from "./pages/ConsolePage.tsx";
+import ManageProjectPage from "./pages/ManageProjectPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/console",
     element: <ConsolePage />,
+  },
+  {
+    path: "/console/projects/:id",
+    element: <ManageProjectPage />,
   },
 ]);
 
