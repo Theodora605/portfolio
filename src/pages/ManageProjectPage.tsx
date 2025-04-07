@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getProject, modifyProject, Project } from "../api/projects";
+import {
+  addProject,
+  getProject,
+  modifyProject,
+  Project,
+} from "../api/projects";
 import { isLoggedIn } from "../api/authentication";
 import DeleteImg from "../assets/sticker-book/delete.png";
 
 const ManageProjectPage = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    if (project === null || id === undefined) {
+    if (project === null) {
+      console.log("No id");
       return;
     }
 
@@ -23,9 +29,17 @@ const ManageProjectPage = () => {
       demo_url:
         formData.get("demo_url") !== ""
           ? (formData.get("demo_url") as string)
-          : "",
+          : null,
       technologies: [],
+      gallery_images: [],
     };
+
+    for (let i = 0; i < project.gallery_images.length; i++) {
+      newProject.gallery_images.push({
+        id: project.gallery_images[i].id,
+        img_uri: formData.get(`gallery-${i}`) as string,
+      });
+    }
 
     for (let i = 0; i < project.technologies.length; i++) {
       newProject.technologies.push({
@@ -35,20 +49,55 @@ const ManageProjectPage = () => {
       });
     }
 
-    const projectId = parseInt(id);
-    if (Number.isNaN(projectId)) {
+    if (id === undefined) {
+      addProject(project).then((success) => {
+        if (success) {
+          navigate("/console");
+        }
+      });
+    } else {
+      const projectId = parseInt(id);
+      if (Number.isNaN(projectId)) {
+        return;
+      }
+      newProject.id = projectId;
+      modifyProject(newProject).then((success) => {
+        if (success) {
+          navigate("/console");
+        }
+      });
+    }
+  };
+
+  const handleCancelClicked = () => {
+    navigate("/console");
+  };
+
+  const handleAddImageClicked = () => {
+    const newProject: Project = JSON.parse(JSON.stringify(project));
+    newProject.gallery_images.push({
+      id: null,
+      img_uri: "",
+    });
+
+    setProject(newProject);
+  };
+
+  const handleRemoveImageClicked = (idx: number) => {
+    if (project?.gallery_images === undefined) {
       return;
     }
 
-    newProject.id = projectId;
-
-    console.log(newProject.description);
-
-    modifyProject(newProject).then((success) => {
-      if (success) {
-        navigate("/console");
+    const newProject: Project = JSON.parse(JSON.stringify(project));
+    const newImages = [];
+    for (let i = 0; i < project.gallery_images.length; i++) {
+      if (i !== idx) {
+        newImages.push(project.gallery_images[i]);
       }
-    });
+    }
+
+    newProject.gallery_images = newImages;
+    setProject(newProject);
   };
 
   const handleAddTechClicked = () => {
@@ -87,6 +136,18 @@ const ManageProjectPage = () => {
     });
 
     if (id === undefined) {
+      // Then making a new project
+      setShowConsole(true);
+      setProject({
+        name: "",
+        description: "",
+        server_endpoint: "",
+        img_uri: "",
+        github_url: "",
+        demo_url: null,
+        technologies: [],
+        gallery_images: [],
+      });
       return;
     }
 
@@ -96,7 +157,11 @@ const ManageProjectPage = () => {
     }
 
     setShowConsole(true);
-    getProject(projectId).then((res) => setProject(res));
+    getProject(projectId)
+      .then((res) => setProject(res))
+      .catch(() => {
+        setError(`Project with id ${id} does not exist.`);
+      });
   }, []);
 
   const { id } = useParams();
@@ -104,10 +169,17 @@ const ManageProjectPage = () => {
 
   const [project, setProject] = useState<Project | null>(null);
   const [showConsole, setShowConsole] = useState(false);
+  const [error, setError] = useState<null | string>(null);
 
   return (
     <div className="flex justify-center m-10">
-      {showConsole && (
+      {error && (
+        <div className="bg-amber-100 border-dark-brown border-solid border-[5px] rounded-3xl p-3">
+          <h1 className="font-bold text-[30px]">Error</h1>
+          <p>{error}</p>
+        </div>
+      )}
+      {showConsole && !error && (
         <form onSubmit={handleSubmit}>
           <div className="w-[900px] bg-amber-100 border-dark-brown border-[5px] border-solid rounded-3xl p-3">
             <table className="flex justify-center border-spacing-x-[100px] border-spacing-y-[10px] border-separate">
@@ -177,6 +249,33 @@ const ManageProjectPage = () => {
                     />
                   </td>
                 </tr>
+                <td>Galley Images</td>
+                <td>
+                  <div>
+                    {project?.gallery_images.map((item, i) => (
+                      <div className="flex items-center gap-1">
+                        <input
+                          key={`gallery-${item.id}`}
+                          name={`gallery-${i}`}
+                          className="resize-none border-solid border-black border-[1px] w-[300px] px-1 my-1"
+                          defaultValue={item.img_uri}
+                        />
+                        <img
+                          className="w-[25px] h-[25px] cursor-pointer"
+                          src={DeleteImg}
+                          onClick={() => handleRemoveImageClicked(i)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="bg-light-brown border-dark-brown border-solid border-[3px] rounded-xl mt-1 float-end"
+                    onClick={handleAddImageClicked}
+                  >
+                    <p className="mx-3">Add</p>
+                  </button>
+                </td>
               </tbody>
             </table>
 
@@ -184,7 +283,7 @@ const ManageProjectPage = () => {
               <div>
                 <p>Technologies</p>
                 <div className="border-dark-brown border-[3px] border-solid p-3 rounded-xl">
-                  <div className="h-[300px] overflow-y-scroll">
+                  <div className="h-[300px] w-[600px] overflow-y-scroll">
                     {project?.technologies &&
                       project?.technologies.map((tech, i) => (
                         <div
@@ -228,6 +327,13 @@ const ManageProjectPage = () => {
             type="submit"
           >
             <p className="mx-3 text-[20px]">Submit</p>
+          </button>
+          <button
+            className="bg-light-brown border-dark-brown border-solid border-[3px] rounded-xl mt-1 mr-5 float-end"
+            type="button"
+            onClick={handleCancelClicked}
+          >
+            <p className="mx-3 text-[20px]">Cancel</p>
           </button>
         </form>
       )}

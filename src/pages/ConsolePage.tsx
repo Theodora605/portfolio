@@ -6,7 +6,7 @@ const ConsolePage = () => {
   const handleTestClicked = () => {
     //getProjects().then((res) => console.log(res[0].name));
     //getProject(2).then((res) => console.log(res.name));
-    navigate("/console/projects/3");
+    navigate("/console/projects/1");
   };
 
   const handleLogoutClicked = () => {

@@ -34,6 +34,10 @@ const router = createBrowserRouter([
     path: "/console/projects/:id",
     element: <ManageProjectPage />,
   },
+  {
+    path: "/console/projects",
+    element: <ManageProjectPage />,
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
