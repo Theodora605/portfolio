@@ -9,6 +9,7 @@ export interface Project {
   github_url: string;
   demo_url: string | null;
   technologies: Technology[];
+  gallery_images: GalleryImage[];
 }
 
 interface Technology {
@@ -17,15 +18,21 @@ interface Technology {
   img_uri: string;
 }
 
+interface GalleryImage {
+  id: number | null;
+  img_uri: string;
+}
+
 export const getProjects: () => Promise<Project[]> = async () => {
   const response = await fetch(`${PROJECTS_URI}`);
-
   return response.json();
 };
 
 export const getProject: (id: number) => Promise<Project> = async (id) => {
   const response = await fetch(`${PROJECTS_URI}/${id}`);
-
+  if (!response.ok) {
+    throw response.json();
+  }
   return response.json();
 };
 
