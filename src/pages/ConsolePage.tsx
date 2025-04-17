@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { logout, isLoggedIn } from "../api/authentication";
 import { useNavigate } from "react-router";
 import { deleteProject, getProjects, Project } from "../api/projects";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 const ConsolePage = () => {
   const handleLogoutClicked = () => {
@@ -21,14 +22,7 @@ const ConsolePage = () => {
       return;
     }
 
-    const success = await deleteProject(projects[projectSelection]);
-    console.log(success);
-    if (success) {
-      setProjectSelection(null);
-      setProjects([]);
-      const newProjects = await getProjects();
-      setProjects(newProjects);
-    }
+    setShowConfirmationModal(true);
   };
 
   const handleModifyProjectClicked = () => {
@@ -37,6 +31,21 @@ const ConsolePage = () => {
     }
 
     navigate(`projects/${projects[projectSelection].id}`);
+  };
+
+  const handleDeleteProjectConfirmed = async () => {
+    if (projectSelection === null) {
+      return;
+    }
+
+    const success = await deleteProject(projects[projectSelection]);
+
+    if (success) {
+      setProjectSelection(null);
+      setShowConfirmationModal(false);
+      const newProjects = await getProjects();
+      setProjects(newProjects);
+    }
   };
 
   useEffect(() => {
@@ -55,9 +64,17 @@ const ConsolePage = () => {
   const [showConsole, setShowConsole] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectSelection, setProjectSelection] = useState<null | number>(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   return (
     <div>
+      {showConfirmationModal && (
+        <ConfirmationModal
+          onCancel={() => setShowConfirmationModal(false)}
+          onOK={handleDeleteProjectConfirmed}
+          message="Continuing this action will permanently delete this project."
+        />
+      )}
       {showConsole && (
         <div className="flex justify-center mt-10">
           <div className="w-[1000px] bg-amber-100 border-dark-brown border-[5px] border-solid rounded-3xl p-3">
