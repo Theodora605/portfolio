@@ -20,12 +20,15 @@ const ManageProjectPage = () => {
 
     const formData = new FormData(e.currentTarget);
 
+    console.log(formData.get("active"));
+
     const newProject: Project = {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       server_endpoint: formData.get("server_endpoint") as string,
       img_uri: formData.get("img_uri") as string,
       github_url: formData.get("github_url") as string,
+      active: (formData.get("active") as string) === "on",
       demo_url:
         formData.get("demo_url") !== ""
           ? (formData.get("demo_url") as string)
@@ -145,6 +148,7 @@ const ManageProjectPage = () => {
         img_uri: "",
         github_url: "",
         demo_url: null,
+        active: false,
         technologies: [],
         gallery_images: [],
       });
@@ -192,6 +196,17 @@ const ManageProjectPage = () => {
                       className="border-solid border-black border-[1px] px-1"
                       type="text"
                       defaultValue={project?.name}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Active</td>
+                  <td>
+                    <input
+                      name="active"
+                      className="border-solid border-black border-[1px] px-1"
+                      type="checkbox"
+                      defaultChecked={project?.active}
                     />
                   </td>
                 </tr>

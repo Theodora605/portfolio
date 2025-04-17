@@ -8,6 +8,7 @@ export interface Project {
   img_uri: string;
   github_url: string;
   demo_url: string | null;
+  active: boolean;
   technologies: Technology[];
   gallery_images: GalleryImage[];
 }
