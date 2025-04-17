@@ -53,7 +53,7 @@ const ManageProjectPage = () => {
     }
 
     if (id === undefined) {
-      addProject(project).then((success) => {
+      addProject(newProject).then((success) => {
         if (success) {
           navigate("/console");
         }
