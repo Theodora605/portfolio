@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { logout, isLoggedIn } from "../api/authentication";
 import { useNavigate } from "react-router";
 import { deleteProject, getProjects, Project } from "../api/projects";
+
 import ConfirmationModal from "../components/ConfirmationModal";
+import { uploadCV } from "../api/upload";
 
 const ConsolePage = () => {
   const handleLogoutClicked = () => {
@@ -48,6 +50,26 @@ const ConsolePage = () => {
     }
   };
 
+  const handleCVSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null) {
+      return;
+    }
+
+    setFileSelection(e.target.files[0]);
+  };
+
+  const handleCVUpload = async () => {
+    if (fileSelection === null) {
+      return;
+    }
+
+    uploadCV(fileSelection).then((succ) => {
+      if (succ) {
+        window.location.reload();
+      }
+    });
+  };
+
   useEffect(() => {
     isLoggedIn().then((success) => {
       if (!success) {
@@ -65,6 +87,7 @@ const ConsolePage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectSelection, setProjectSelection] = useState<null | number>(null);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [fileSelection, setFileSelection] = useState<File | null>(null);
 
   return (
     <div>
@@ -89,7 +112,7 @@ const ConsolePage = () => {
               Console
             </h2>
             <p className="text-[20px] text-dark-brown">Projects</p>
-            <div className="min-w-max h-[200px] bg-white border-dark-brown border-solid border-[3px] rounded-xl p-3">
+            <div className="w-[950px] h-[200px] bg-white border-dark-brown border-solid border-[3px] rounded-xl overflow-y-scroll p-3">
               <table>
                 <thead className="table-header-group">
                   <tr>
@@ -144,6 +167,23 @@ const ConsolePage = () => {
                 onClick={handleDeleteProjectClicked}
               >
                 <p className="mx-3 text-[16px]">Delete</p>
+              </button>
+            </div>
+            <div className="flex mt-10">
+              <p>CV Upload</p>
+              <a
+                target="_blank"
+                href="https://storage.googleapis.com/theo-cv/theo_goossens.pdf"
+              >
+                <p className="text-blue-400 mx-10">preview</p>
+              </a>
+              <input type="file" accept=".pdf" onChange={handleCVSelection} />
+              <button
+                type="button"
+                className="border-dark-brown border-solid border-[3px] rounded-2xl bg-light-brown"
+                onClick={handleCVUpload}
+              >
+                <p className="mx-3 text-[16px] text-dark-brown">Upload</p>
               </button>
             </div>
           </div>
