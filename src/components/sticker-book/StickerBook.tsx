@@ -342,7 +342,7 @@ const StickerBook = () => {
       .then(handleResponse);
   }, []);
 
-  const interval = useRef<number>(-1);
+  const interval = useRef<ReturnType<typeof setInterval> | number>(-1);
 
   const [stickers, setStickers] = useState<Sticker[]>([]);
   const [panelSelection, setPanelSelection] = useState<number>(MOVE);
