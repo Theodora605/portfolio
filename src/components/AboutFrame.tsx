@@ -3,7 +3,6 @@ import GitHubImg from "../assets/github.png";
 import GmailImg from "../assets/gmail.png";
 import LinkedinImg from "../assets/linkedin.png";
 import ResumeImg from "../assets/profile.png";
-import ResumePdf from "../assets/downloads/theo_goossens.pdf";
 
 const AboutFrame = () => {
   return (
@@ -31,7 +30,11 @@ const AboutFrame = () => {
           <a className="m-auto" href="mailto:theodore.goossens@gmail.com">
             <img className="h-auto w-[60px]" src={GmailImg} />
           </a>
-          <a className="m-auto" target="_blank" href={ResumePdf}>
+          <a
+            className="m-auto"
+            target="_blank"
+            href="https://storage.googleapis.com/theo-cv/theo_goossens.pdf"
+          >
             <img className="h-auto w-[60px]" src={ResumeImg} />
           </a>
         </div>
