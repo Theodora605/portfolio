@@ -17,6 +17,7 @@ import BBishopImg from "../assets/chess/black-bishop.png";
 import BRookImg from "../assets/chess/black-rook.png";
 import BQueenImg from "../assets/chess/black-queen.png";
 import BKingImg from "../assets/chess/black-king.png";
+import { getProjectsByPath } from "../api/projects";
 
 export type Team = null | "WHITE" | "BLACK";
 
@@ -78,10 +79,17 @@ function ChessPage() {
       let img = new Image();
       img.src = imgSrc;
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    getProjectsByPath("/chess").then((res) =>
+      setChessEndpoint(res[0].server_endpoint)
+    );
+  }, []);
 
   const [selection, setSelection] = useState<Team>(null);
   const [showHelp, setShowHelp] = useState(false);
+  const [chessEndpoint, setChessEndpoint] = useState<null | string>(null);
 
   const handleSelection = (s: Team) => {
     setSelection(s);
@@ -108,11 +116,13 @@ function ChessPage() {
       </div>
 
       <div className="flex flex-col gap-[10px] h-[600px] items-center justify-center">
-        <StompSessionProvider url={"http://18.210.7.237:8080/websocket"}>
-          {!selection && <TeamSelection onSelection={handleSelection} />}
-          {selection && <ChessBoard player={selection} />}
-          <SendingMessages />
-        </StompSessionProvider>
+        {chessEndpoint && (
+          <StompSessionProvider url={`http://${chessEndpoint}:8080/websocket`}>
+            {!selection && <TeamSelection onSelection={handleSelection} />}
+            {selection && <ChessBoard player={selection} />}
+            <SendingMessages />
+          </StompSessionProvider>
+        )}
       </div>
 
       <div className="flex flex-col w-[400px] p-3 bg-amber-100 border-dark-brown border-solid border-[5px] mt-3 mx-[40%] rounded-xl">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StickerBook from "../components/sticker-book/StickerBook";
 import HelpModal from "../components/HelpModal";
 
@@ -7,6 +7,7 @@ import RotateImg from "../assets/sticker-book/refresh.png";
 import RemoveImg from "../assets/sticker-book/remove.png";
 import UploadImg from "../assets/sticker-book/upload.png";
 import SaveImg from "../assets/sticker-book/save.png";
+import { getProjectsByPath } from "../api/projects";
 
 const helpContents = (
   <div>
@@ -157,7 +158,14 @@ const helpContents = (
 );
 
 const StickerBookPage = () => {
+  useEffect(() => {
+    getProjectsByPath("/stickers").then((res) =>
+      setStickersEndpoint(res[0].server_endpoint)
+    );
+  }, []);
+
   const [showHelp, setShowHelp] = useState(false);
+  const [stickersEndpoint, setStickersEndpoint] = useState<null | string>(null);
 
   return (
     <div>
@@ -180,7 +188,9 @@ const StickerBookPage = () => {
       </div>
 
       <div className="flex justify-center mt-[-8px]">
-        <StickerBook />
+        {stickersEndpoint && (
+          <StickerBook endpoint={`http://${stickersEndpoint}:5000`} />
+        )}
       </div>
       {showHelp && (
         <HelpModal Content={helpContents} onClose={() => setShowHelp(false)} />

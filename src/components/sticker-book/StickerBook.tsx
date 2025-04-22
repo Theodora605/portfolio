@@ -51,8 +51,8 @@ type StatusMessage =
   | "Deleting..."
   | "Uploading...";
 
-const STICKERS_URI = "http://44.200.255.191:5000/stickers";
-const POSITIONS_URI = "http://44.200.255.191:5000/positions";
+//const STICKERS_URI = "http://44.200.255.191:5000/stickers";
+//const POSITIONS_URI = "http://44.200.255.191:5000/positions";
 
 const REMOVE = -3;
 const MOVE = -2;
@@ -61,7 +61,10 @@ const ROTATE = -1;
 const STICKER_BOUNDS = 80;
 const MESSAGE_TIMEOUT = 3000;
 
-const StickerBook = () => {
+interface StickerBookParams {
+  endpoint: string;
+}
+const StickerBook = ({ endpoint }: StickerBookParams) => {
   const handleResponse = (response: StickerJSON[]) => {
     const newStickers: Sticker[] = [];
 
@@ -113,12 +116,12 @@ const StickerBook = () => {
 
         if (position.deleted) {
           if (position.id !== -1) {
-            fetch(`${POSITIONS_URI}/${position.id}`, {
+            fetch(`${endpoint}/positions/${position.id}`, {
               method: "DELETE",
             });
           }
         } else if (positionJson.id === -1) {
-          fetch(POSITIONS_URI, {
+          fetch(`${endpoint}/positions`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -130,7 +133,7 @@ const StickerBook = () => {
             }),
           });
         } else {
-          fetch(`${POSITIONS_URI}/${positionJson.id}`, {
+          fetch(`${endpoint}/positions/${positionJson.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -158,14 +161,14 @@ const StickerBook = () => {
 
     setStatusMessage("Uploading...");
 
-    await fetch(STICKERS_URI, {
+    await fetch(`${endpoint}/stickers`, {
       method: "POST",
       body: data,
     });
 
     setStatusMessage("Loading...");
 
-    fetch(STICKERS_URI, {
+    fetch(`${endpoint}/stickers`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -263,14 +266,14 @@ const StickerBook = () => {
     setMarkedForDeletion(-1);
     setStatusMessage("Deleting...");
 
-    await fetch(`${STICKERS_URI}/${stickers[marked].id}`, {
+    await fetch(`${endpoint}/stickers/${stickers[marked].id}`, {
       method: "DELETE",
     });
 
     setStatusMessage("Loading...");
     setPanelSelection(MOVE);
 
-    await fetch(STICKERS_URI, {
+    await fetch(`${endpoint}/stickers`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -333,7 +336,7 @@ const StickerBook = () => {
   });
 
   useEffect(() => {
-    fetch(STICKERS_URI, {
+    fetch(`${endpoint}/stickers`, {
       headers: {
         "Content-Type": "application/json",
       },
