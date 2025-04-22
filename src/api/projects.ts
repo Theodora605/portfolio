@@ -37,6 +37,13 @@ export const getProject: (id: number) => Promise<Project> = async (id) => {
   return response.json();
 };
 
+export const getProjectsByPath: (
+  demoPath: string
+) => Promise<Project[]> = async (demoPath) => {
+  const response = await fetch(`${PROJECTS_URI}/query?demo=${demoPath}`);
+  return response.json();
+};
+
 export const addProject: (project: Project) => Promise<boolean> = async (
   project
 ) => {
