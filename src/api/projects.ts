@@ -1,4 +1,6 @@
-const PROJECTS_URI = "http://127.0.0.1:5000/projects";
+import { API_ENDPOINT } from "./endpoints";
+
+const PROJECTS_URI = `${API_ENDPOINT}/projects`;
 
 export interface Project {
   id?: number;
@@ -40,7 +42,7 @@ export const getProject: (id: number) => Promise<Project> = async (id) => {
 export const getProjectsByPath: (
   demoPath: string
 ) => Promise<Project[]> = async (demoPath) => {
-  const response = await fetch(`${PROJECTS_URI}/query?demo=${demoPath}`);
+  const response = await fetch(`${PROJECTS_URI}?demo=${demoPath}`);
   return response.json();
 };
 

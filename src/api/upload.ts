@@ -1,4 +1,6 @@
-const CV_UPLOAD_URI = "http://127.0.0.1:5000/cv";
+import { API_ENDPOINT } from "./endpoints";
+
+const CV_UPLOAD_URI = `${API_ENDPOINT}/cv`;
 
 export const uploadCV: (file: File) => Promise<boolean> = async (file) => {
   const data = new FormData();
